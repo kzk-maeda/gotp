@@ -8,7 +8,7 @@ import (
 
 func parseArgs() string {
 	// define args
-	definedArgs := [3]string{"init", "list", "add"}
+	definedArgs := [4]string{"init", "list", "add", "help"}
 	// parse commandline args
 	flag.Parse()
 	args := flag.Args()
@@ -24,7 +24,11 @@ func parseArgs() string {
 			return args[0]
 		}
 	}
-	fmt.Fprintln(os.Stderr, "args does not match(init|list|add)")
+	fmt.Fprintln(os.Stderr, "args does not match(init|list|add|help)")
 	os.Exit(1)
 	return ""
+}
+
+func help() {
+	fmt.Println("GOTP Help")
 }

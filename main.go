@@ -21,6 +21,8 @@ func main() {
 		config.addConfig()
 	case "list":
 		config.listConfig()
+	case "help":
+		help()
 	case "default":
 		// culc otp
 		fmt.Println("GOTP")
