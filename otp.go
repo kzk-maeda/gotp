@@ -1,4 +1,4 @@
-package otp
+package main
 
 import (
 	"crypto/hmac"
@@ -27,7 +27,7 @@ func HMACSHA1(k []byte, c uint64) []byte {
 func TOTP(k string, x uint64) int {
 	key, err := base32.StdEncoding.DecodeString(k)
 	if err != nil {
-			return 0
+		return 0
 	}
 
 	return HOTP(key, T(0, x))
