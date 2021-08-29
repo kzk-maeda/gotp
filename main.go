@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+	// configure
+	config := &CmdConfig{}
+	config.init()
+
 	fmt.Println("GOTP")
 	totp := execTOTP("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF", 30)
 	fmt.Println(totp)
