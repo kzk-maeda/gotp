@@ -7,6 +7,7 @@ import (
 )
 
 type ICmdConfig interface {
+	constructor()
 	init()
 	createConfDir() error
 	createConfFile() error
@@ -19,7 +20,7 @@ type CmdConfig struct {
 	confFile string
 }
 
-func (c *CmdConfig) init() {
+func (c *CmdConfig) constructor() {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -27,13 +28,16 @@ func (c *CmdConfig) init() {
 	}
 
 	c.confDir = filepath.Join(home, ".gotp")
-	err = c.createConfDir()
+	c.confFile = filepath.Join(c.confDir, "config.yml")
+}
+
+func (c *CmdConfig) init() {
+	err := c.createConfDir()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
-	c.confFile = filepath.Join(c.confDir, "config.yml")
 	fmt.Println(c.confFile)
 	err = c.createConfFile()
 	if err != nil {
