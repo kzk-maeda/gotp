@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/atotto/clipboard"
@@ -10,7 +11,7 @@ import (
 func main() {
 	// parse args
 	arg := parseArgs()
-	fmt.Println(arg)
+	// fmt.Println(arg)
 	config := &CmdConfig{}
 	config.constructor()
 
@@ -18,7 +19,10 @@ func main() {
 	case "init":
 		config.init()
 	case "add":
-		config.addConfig()
+		err := config.addConfig()
+		if err != nil {
+			os.Exit(1)
+		}
 	case "list":
 		config.listConfig()
 	case "help":
