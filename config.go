@@ -16,6 +16,7 @@ type ICmdConfig interface {
 	createConfFile() error
 	addConfig()
 	listConfig()
+	readConfig() ([]map[interface{}]interface{}, error)
 }
 
 type CmdConfig struct {
@@ -128,5 +129,31 @@ func (c *CmdConfig) addConfig() (err error) {
 }
 
 func (c *CmdConfig) listConfig() {
+	confList, _ := c.readConfig()
 
+	for i, v := range confList {
+		fmt.Println(i, v["name"])
+	}
+}
+
+// confを読んでリスト形式の一覧を返す
+func (c *CmdConfig) readConfig() (list []map[interface{}]interface{}, err error) {
+	f, err := os.Open(c.confFile)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Can't read config file: %v\n", err)
+		return nil, err
+	}
+	defer f.Close()
+
+	dec := yaml.NewDecoder(f)
+
+	var confList []map[interface{}]interface{}
+	var tmp map[interface{}]interface{}
+	for (dec.Decode(&tmp)) == nil {
+		// fmt.Printf("%v\n", tmp)
+		confList = append(confList, tmp)
+		tmp = nil
+	}
+
+	return confList, nil
 }
