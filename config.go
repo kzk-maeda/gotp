@@ -15,7 +15,7 @@ type ICmdConfig interface {
 	createConfDir() error
 	createConfFile() error
 	addConfig()
-	listConfig()
+	listConfig() error
 	readConfig() ([]map[interface{}]interface{}, error)
 }
 
@@ -128,12 +128,17 @@ func (c *CmdConfig) addConfig() (err error) {
 	return nil
 }
 
-func (c *CmdConfig) listConfig() {
-	confList, _ := c.readConfig()
+func (c *CmdConfig) listConfig() (err error) {
+	confList, err := c.readConfig()
+	if err != nil {
+		return err
+	}
 
 	for i, v := range confList {
 		fmt.Println(i, v["name"])
 	}
+
+	return nil
 }
 
 // confを読んでリスト形式の一覧を返す
