@@ -33,8 +33,8 @@ func main() {
 		key := selectKey(*config)
 		secret, _ := config.getSecretFromName(key)
 		// fmt.Println(secret)
-		totp := execTOTP(secret, 60)
+		totp := execTOTP(secret, 30)
 		fmt.Println(totp)
-		clipboard.WriteAll(strconv.Itoa(totp))
+		clipboard.WriteAll(strconv.Itoa(int(totp)))
 	}
 }
