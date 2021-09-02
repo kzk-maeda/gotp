@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -16,6 +17,7 @@ type ICmdConfig interface {
 	createConfFile() error
 	addConfig()
 	listConfig() error
+	getSecretFromName(string) (string error)
 	readConfig() ([]map[interface{}]interface{}, error)
 }
 
@@ -139,6 +141,21 @@ func (c *CmdConfig) listConfig() (err error) {
 	}
 
 	return nil
+}
+
+func (c *CmdConfig) getSecretFromName(name string) (secret string, err error) {
+	confList, err := c.readConfig()
+	if err != nil {
+		return "", err
+	}
+	// fmt.Println(confList)
+	for _, v := range confList {
+		if name == v["name"] {
+			return v["secret"].(string), nil
+		}
+	}
+	fmt.Fprintln(os.Stderr, "Can't find that name in config file")
+	return "", errors.New(fmt.Sprintln("Value error"))
 }
 
 // confを読んでリスト形式の一覧を返す

@@ -30,7 +30,10 @@ func main() {
 	case "default":
 		// culc otp
 		fmt.Println("GOTP")
-		totp := execTOTP("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEF", 30)
+		key := selectKey(*config)
+		secret, _ := config.getSecretFromName(key)
+		// fmt.Println(secret)
+		totp := execTOTP(secret, 60)
 		fmt.Println(totp)
 		clipboard.WriteAll(strconv.Itoa(totp))
 	}

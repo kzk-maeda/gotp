@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/manifoldco/promptui"
 )
 
 func parseArgs() string {
@@ -27,6 +29,26 @@ func parseArgs() string {
 	fmt.Fprintln(os.Stderr, "args does not match(init|list|add|help)")
 	os.Exit(1)
 	return ""
+}
+
+func selectKey(config CmdConfig) string {
+	confList, err := config.readConfig()
+	if err != nil {
+		os.Exit(1)
+	}
+	var keys []string
+	for _, v := range confList {
+		keys = append(keys, v["name"].(string))
+	}
+	prompt := promptui.Select{
+		Label: "Select Key",
+		Items: keys,
+	}
+	_, result, err := prompt.Run()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Pronpt Failed %v\n", err)
+	}
+	return result
 }
 
 func help() {

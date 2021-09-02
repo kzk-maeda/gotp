@@ -3,8 +3,9 @@ package main
 import (
 	"crypto/hmac"
 	"crypto/sha1"
-	"encoding/base32"
+	"encoding/base64"
 	"encoding/binary"
+	"fmt"
 	"time"
 )
 
@@ -25,8 +26,10 @@ func hmacsha1(k []byte, c uint64) []byte {
 }
 
 func execTOTP(k string, x uint64) int {
-	key, err := base32.StdEncoding.DecodeString(k)
+	fmt.Println(k)
+	key, err := base64.StdEncoding.DecodeString(string(k))
 	if err != nil {
+		fmt.Printf("Decode Error: %v\n", err)
 		return 0
 	}
 
