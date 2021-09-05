@@ -6,6 +6,7 @@ import (
 	"encoding/base32"
 	"encoding/binary"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -25,15 +26,16 @@ func hmacsha1(k []byte, c uint64) []byte {
 	return mac.Sum(nil)
 }
 
-func execTOTP(k string, x uint64) uint32 {
-	fmt.Println(k)
-	key, err := base32.StdEncoding.DecodeString(string(k))
+func execTOTP(k string, x uint64) string {
+	// fmt.Println(strings.ToUpper(k))
+	key, err := base32.StdEncoding.DecodeString(strings.ToUpper(k))
 	if err != nil {
 		fmt.Printf("Decode Error: %v\n", err)
-		return 0
+		return ""
 	}
 
-	return hotp(key, t(0, x))
+	totp := hotp(key, t(0, x))
+	return paddingZero(totp)
 }
 
 func hotp(k []byte, c uint64) uint32 {
@@ -42,4 +44,9 @@ func hotp(k []byte, c uint64) uint32 {
 
 func t(t0, x uint64) uint64 {
 	return (uint64(time.Now().Unix()) - t0) / x
+}
+
+func paddingZero(totp uint32) string {
+	s := fmt.Sprintf("%06d", totp)
+	return s
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/atotto/clipboard"
 )
@@ -35,6 +34,6 @@ func main() {
 		// fmt.Println(secret)
 		totp := execTOTP(secret, 30)
 		fmt.Println(totp)
-		clipboard.WriteAll(strconv.Itoa(int(totp)))
+		clipboard.WriteAll(totp)
 	}
 }
