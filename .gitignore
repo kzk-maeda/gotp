@@ -15,3 +15,6 @@
 # vendor/
 
 /MEMO.md
+/gotp
+/bin/*
+!/bin/.gitkeep
