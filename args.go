@@ -8,6 +8,8 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
+var osExit = os.Exit
+
 func parseArgs() string {
 	// define args
 	definedArgs := [4]string{"init", "list", "add", "help"}
@@ -19,7 +21,7 @@ func parseArgs() string {
 	}
 	if len(args) > 1 {
 		fmt.Fprintln(os.Stderr, "args too much")
-		os.Exit(1)
+		osExit(1)
 	}
 	for _, v := range definedArgs {
 		if args[0] == v {
@@ -27,14 +29,14 @@ func parseArgs() string {
 		}
 	}
 	fmt.Fprintln(os.Stderr, "args does not match(init|list|add|help)")
-	os.Exit(1)
+	osExit(1)
 	return ""
 }
 
 func selectKey(config CmdConfig) string {
 	confList, err := config.readConfig()
 	if err != nil {
-		os.Exit(1)
+		osExit(1)
 	}
 	var keys []string
 	for _, v := range confList {
