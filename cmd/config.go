@@ -45,19 +45,29 @@ func (c *CmdConfig) constructor() {
 }
 
 func (c *CmdConfig) init() {
-	err := c.createConfDir()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
+	// check exists config dir/file
+	if _, err := os.Stat(c.confDir); os.IsNotExist(err) {
+		// path/to/whatever exists
+		err := c.createConfDir()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			os.Exit(1)
+		}
+	} else {
+		fmt.Fprintf(os.Stdout, "Config directory is already exists\n")
 	}
 
-	err = c.createConfFile()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
+	if _, err := os.Stat(c.confFile); os.IsNotExist(err) {
+		err = c.createConfFile()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			os.Exit(1)
+		}
 
-	fmt.Printf("Created config directory and file: %v\n", c.confFile)
+		fmt.Printf("Created config directory and file: %v\n", c.confFile)
+	} else {
+		fmt.Fprintf(os.Stdout, "Config file is already exists\n")
+	}
 
 }
 
