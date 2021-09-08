@@ -12,6 +12,8 @@ This tool enable you to manage your TOTP (such as google authenticator) in comma
 
 gotp is a command-line tool that enable you to manage your TOTP keys simply and enable you select one time password in command line
 
+<img src="./readme_resources/gotp_demo.gif">
+
 
 ## Basic Usage
 
